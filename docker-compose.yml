@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 
 volumes:
   express_sample_db_dev: {}
@@ -13,6 +13,11 @@ services:
       - POSTGRES_USER=sampleuser
       - POSTGRES_PASSWORD=samplesecret
       - POSTGRES_INITDB_ARGS=--encoding=UTF-8
+    healthcheck:
+      test: "pg_isready -h localhost -p 5432 -q -U postgres"
+      interval: 3s
+      timeout: 5s
+      retries: 5
 
   django:
     build:
@@ -29,7 +34,8 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     links:
       - db:postgres
     command: /start-dev.sh

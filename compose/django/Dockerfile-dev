@@ -13,8 +13,5 @@ ADD    ./manage.py                    /app/
 ADD    ./requirements.txt             /app/
 RUN    pip install -r requirements.txt
 
-ADD    compose/django/entrypoint.sh      /entrypoint.sh
 ADD    compose/django/start-dev.sh       /start-dev.sh
 RUN    chmod +x /*.sh
-
-ENTRYPOINT ["/entrypoint.sh"]
