@@ -1,0 +1,39 @@
+version: '2'
+
+volumes:
+  express_sample_db_dev: {}
+
+services:
+  db:
+    image: postgres:9.6.1
+    volumes:
+      - express_sample_db_dev:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=sampledb
+      - POSTGRES_USER=sampleuser
+      - POSTGRES_PASSWORD=samplesecret
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
+
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile-dev
+    environment:
+      - DJANGO_DEBUG=True
+      - DJANGO_DB_HOST=postgres
+      - DJANGO_DB_PORT=5432
+      - DJANGO_DB_NAME=sampledb
+      - DJANGO_DB_USERNAME=sampleuser
+      - DJANGO_DB_PASSWORD=samplesecret
+      - DJANGO_SECRET_KEY=dev_secret_key
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    links:
+      - db:postgres
+    command: /start-dev.sh
+    volumes:
+      - ./manage.py:/app/manage.py
+      - ./requirements.txt:/app/requirements.txt
+      - ./djangosample:/app/djangosample
