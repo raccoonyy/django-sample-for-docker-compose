@@ -1,13 +1,13 @@
 version: '2.1'
 
 volumes:
-  express_sample_db_dev: {}
+  django_sample_db_dev: {}
 
 services:
   db:
     image: postgres:9.6.1
     volumes:
-      - express_sample_db_dev:/var/lib/postgresql/data
+      - django_sample_db_dev:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=sampledb
       - POSTGRES_USER=sampleuser
