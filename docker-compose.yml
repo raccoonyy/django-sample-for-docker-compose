@@ -14,10 +14,10 @@ services:
       - POSTGRES_PASSWORD=samplesecret
       - POSTGRES_INITDB_ARGS=--encoding=UTF-8
     healthcheck:
-      test: "pg_isready -h localhost -p 5432 -q -U postgres"
+      test: "pg_isready -h localhost -p 5432 -U postgres"
       interval: 3s
-      timeout: 5s
-      retries: 5
+      timeout: 1s
+      retries: 10
 
   django:
     build:
