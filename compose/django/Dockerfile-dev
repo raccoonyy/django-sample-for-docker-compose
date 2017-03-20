@@ -10,8 +10,6 @@ RUN \
 WORKDIR /app
 
 ADD    ./manage.py                    /app/
-ADD    ./requirements.txt             /app/
-RUN    pip install -r requirements.txt
 
 ADD    compose/django/start-dev.sh       /start-dev.sh
 RUN    chmod +x /*.sh

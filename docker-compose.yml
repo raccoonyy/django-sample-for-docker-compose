@@ -2,6 +2,7 @@ version: '2.1'
 
 volumes:
   django_sample_db_dev: {}
+  django_sample_packages: {}
 
 services:
   db:
@@ -43,3 +44,4 @@ services:
       - ./manage.py:/app/manage.py
       - ./requirements.txt:/app/requirements.txt
       - ./djangosample:/app/djangosample
+      - django_sample_packages:/usr/local/lib/python3.6/site-packages/
