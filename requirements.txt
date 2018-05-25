@@ -1,3 +1,3 @@
 Django
 gunicorn
-psycopg2
+psycopg2-binary

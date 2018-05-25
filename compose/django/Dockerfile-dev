@@ -4,8 +4,7 @@ MAINTAINER raccoony <raccoonyy@gmail.com>
 RUN \
     apt-get update &&\
     apt-get -y install \
-        libpq-dev \
-        python-dev
+        libpq-dev
 
 WORKDIR /app
 
