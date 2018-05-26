@@ -1,24 +1,17 @@
-version: '2.1'
+version: '3'
 
 volumes:
   django_sample_db_dev: {}
-  django_sample_packages: {}
 
 services:
   db:
-    image: postgres:9.6.1
+    image: postgres
     volumes:
       - django_sample_db_dev:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=sampledb
       - POSTGRES_USER=sampleuser
       - POSTGRES_PASSWORD=samplesecret
-      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
-    healthcheck:
-      test: "pg_isready -h localhost -p 5432 -U postgres"
-      interval: 3s
-      timeout: 1s
-      retries: 10
 
   django:
     build:
@@ -35,13 +28,14 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     links:
       - db:postgres
-    command: /start-dev.sh
+    command:
+      - bash
+      - -c
+      - |
+        python manage.py migrate
+        python manage.py runserver 0:8000
     volumes:
-      - ./manage.py:/app/manage.py
-      - ./requirements.txt:/app/requirements.txt
-      - ./djangosample:/app/djangosample
-      - django_sample_packages:/usr/local/lib/python3.6/site-packages/
+      - ./:/app/
