@@ -38,5 +38,7 @@ services:
         /wait-for-it.sh postgres:5432 -t 10
         python manage.py migrate
         python manage.py runserver 0:8000
+    # stdin_open: true
+    # tty: true
     volumes:
       - ./:/app/
