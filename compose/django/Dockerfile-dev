@@ -10,5 +10,6 @@ WORKDIR /app
 ADD    requirements.txt    /app/
 RUN    pip install -r requirements.txt
 
+ADD    https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /
 ADD    compose/django/start-dev.sh       /start-dev.sh
 RUN    chmod +x /*.sh
