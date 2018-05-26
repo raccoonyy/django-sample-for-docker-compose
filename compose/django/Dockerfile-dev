@@ -1,14 +1,14 @@
 FROM python:3
-MAINTAINER raccoony <raccoonyy@gmail.com>
 
-RUN \
-    apt-get update &&\
-    apt-get -y install \
-        libpq-dev
+ENV PYTHONUNBUFFERED 0
+
+RUN apt-get update && apt-get -y install \
+    libpq-dev
 
 WORKDIR /app
 
-ADD    ./manage.py                    /app/
+ADD    requirements.txt    /app/
+RUN    pip install -r requirements.txt
 
 ADD    compose/django/start-dev.sh       /start-dev.sh
 RUN    chmod +x /*.sh

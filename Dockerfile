@@ -1,19 +1,13 @@
 FROM python:3
-MAINTAINER raccoony <raccoonyy@gmail.com>
 
-RUN \
-    apt-get update &&\
-    apt-get -y install \
-        libpq-dev \
-        python-dev
+RUN apt-get update && apt-get -y install \
+    libpq-dev
 
 WORKDIR /app
-
-ADD    ./manage.py            /app/
-ADD    ./requirements.txt     /app/
+ADD    ./requirements.txt   /app/
 RUN    pip install -r requirements.txt
 
-ADD    ./djangosample/        /app/djangosample/
-RUN    ./manage.py collectstatic --noinput
+ADD    ./djangosample   /app/djangosample/
+ADD    ./manage.py      /app/
 
-CMD ["gunicorn", "--workers=3", "--bind", "0:8000", "djangosample.wsgi"]
+CMD ["python", "manage.py", "runserver", "0:8000"]
