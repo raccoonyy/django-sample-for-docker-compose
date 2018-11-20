@@ -42,7 +42,3 @@ $ docker-compose up
 - compose/django/Dockerfile-dev
 
 개발용 컨테이너를 만들기 위한 Dockerfile (배포용 Dockerfile과 살짝 다름)
-
-- compose/django/start-dev.sh
-
-데이터베이스 마이그레이션과 개발 서버 실행을 담당하는 스크립트
