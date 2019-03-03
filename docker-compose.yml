@@ -12,6 +12,7 @@ services:
       - POSTGRES_DB=sampledb
       - POSTGRES_USER=sampleuser
       - POSTGRES_PASSWORD=samplesecret
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
 
   django:
     build:
@@ -19,7 +20,7 @@ services:
       dockerfile: ./compose/django/Dockerfile-dev
     environment:
       - DJANGO_DEBUG=True
-      - DJANGO_DB_HOST=postgres
+      - DJANGO_DB_HOST=db
       - DJANGO_DB_PORT=5432
       - DJANGO_DB_NAME=sampledb
       - DJANGO_DB_USERNAME=sampleuser
@@ -27,18 +28,10 @@ services:
       - DJANGO_SECRET_KEY=dev_secret_key
     ports:
       - "8000:8000"
-    depends_on:
-      - db
-    links:
-      - db:postgres
     command:
       - bash
       - -c
       - |
-        /wait-for-it.sh postgres:5432 -t 10
+        /wait-for-it.sh db:5432 -t 10
         python manage.py migrate
         python manage.py runserver 0:8000
-    # stdin_open: true
-    # tty: true
-    volumes:
-      - ./:/app/
