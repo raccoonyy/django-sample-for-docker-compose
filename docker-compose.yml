@@ -1,39 +1,29 @@
 version: '3'
 
 volumes:
-  django_sample_db_dev: {}
+  postgres_data: {}
 
 services:
   db:
     image: postgres
     volumes:
-      - django_sample_db_dev:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgres/data
     environment:
-      - POSTGRES_DB=sampledb
+      - POSTGRES_DB=djangosample
       - POSTGRES_USER=sampleuser
       - POSTGRES_PASSWORD=samplesecret
-      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
 
   django:
     build:
       context: .
       dockerfile: ./compose/django/Dockerfile-dev
-    environment:
-      - DJANGO_DEBUG=True
-      - DJANGO_DB_HOST=db
-      - DJANGO_DB_PORT=5432
-      - DJANGO_DB_NAME=sampledb
-      - DJANGO_DB_USERNAME=sampleuser
-      - DJANGO_DB_PASSWORD=samplesecret
-      - DJANGO_SECRET_KEY=dev_secret_key
-    ports:
-      - "8000:8000"
-    command:
-      - bash
-      - -c
-      - |
-        python manage.py migrate
-        python manage.py runserver 0:8000
-    restart: always
     volumes:
       - ./:/app/
+    command: ["./manage.py", "runserver", "0:8000"]
+    environment:
+     - DJANGO_DB_HOST=db
+    depends_on:
+      - db
+    restart: always
+    ports:
+      - 8000:8000
