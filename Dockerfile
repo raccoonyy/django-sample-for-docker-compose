@@ -5,6 +5,7 @@ ADD    ./requirements.txt   /app/
 RUN    pip install -r requirements.txt
 
 ADD    ./djangosample   /app/djangosample/
+ADD    ./gunicorn       /app/gunicorn/
 ADD    ./manage.py      /app/
 
-CMD ["python", "manage.py", "runserver", "0:8000"]
+CMD ["gunicorn", "djangosample.wsgi", "-c", "gunicorn/prod.py"]
